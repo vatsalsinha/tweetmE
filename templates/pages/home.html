@@ -37,10 +37,14 @@ Home
         event.preventDefault()
         const myForm = event.target
         const myFormData = new FormData(myForm)
-        for (var myItem of myFormData.entries()){
-            console.log(myItem)
+        const url = myForm.getAttribute("action")
+        const method = myForm.getAttribute("method")
+        const xhr = new XMLHttpRequest()
+        xhr.open(method, url)
+        xhr.onload = function (){
+            const serverResponse = xhr.response
         }
-
+        xhr.send(myFormData )
     }
 
     tweetCreateFormEl.addEventListener("submit", handleTweetCreateFormSubmit )
