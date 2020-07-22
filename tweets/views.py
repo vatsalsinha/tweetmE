@@ -5,6 +5,7 @@ import random
 from django.utils.http import is_safe_url
 from .forms import TweetForm
 from django.conf import settings
+from .serializers import TweetSerializer
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -37,12 +38,19 @@ def tweet_list_view(request, *args, **kwargs):
     return JsonResponse(data)
 
 
-def tweet_create_view(request, *args, **kwargs):
+def tweet_create_view_pure_django(request, *args, **kwargs):
+    user = request.user 
+    if not request.user.is_authenticated:
+        user = None
+        if request.is_ajax():
+            return JsonResponse({}, status = 401 )
+        return redirect(settings.LOGIN_URL) 
     form = TweetForm(request.POST or None)
     next_url = request.POST.get("next") or None
     if form.is_valid():
         obj = form.save(commit=False)
         # do other form related logic
+        obj.user = user
         obj.save()
         if request.is_ajax():
             return JsonResponse(obj.serialize(), status=201) # 201 == created items
@@ -53,3 +61,11 @@ def tweet_create_view(request, *args, **kwargs):
         if request.is_ajax():
             return JsonResponse(form.errors, status=400)
     return render(request, 'components/form.html', context={"form": form})
+
+
+def tweet_create_view(request, *args, **kwargs):
+    serializer = TweetSerializer(data = request.POST or None)
+    if serializer.is_valid():
+        obj = serializer.save(user = request.user)
+        return JsonResponse(serializer.data, status = 201)
+    return JsonResponse({}, status = 400)
