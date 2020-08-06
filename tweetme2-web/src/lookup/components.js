@@ -14,8 +14,8 @@ function getCookie(name) {
   return cookieValue;
 }
 
-function lookup(method, endpoint, callback, data) {
-  let jsonData;
+export function backendLookup(method, endpoint, callback, data) {
+  let jsonData = data
   if (data){
     jsonData = JSON.stringify(data)
   }
@@ -39,13 +39,7 @@ function lookup(method, endpoint, callback, data) {
     console.log(e)
     callback({"message": "The request was an error"}, 400)
   }
+  console.log(jsonData)
   xhr.send(jsonData)
 }
 
-export function createTweet(newTweet, callback){
-  lookup("POST", "/tweets/create/", callback, {content: newTweet})
-}
-
-export function loadTweets(callback) {
-    lookup("GET", "/tweets/", callback)
-}
