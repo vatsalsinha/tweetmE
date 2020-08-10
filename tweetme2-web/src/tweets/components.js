@@ -60,8 +60,16 @@ export function TweetsList(props) {
         apiTweetList(handleTweetListLookup)
       }
     }, [tweetsInit, tweetsDidSet, setTweetsDidSet])
+    const handleDidRetweet = (newtweet) => {
+         const updateTweetsInit = [...tweetsInit]
+         updateTweetsInit.unshift(newtweet)
+         setTweetsInit(updateTweetsInit)
+         const updateFinalTweets = [...tweets]
+         updateFinalTweets.unshift(tweets)
+         setTweets(updateFinalTweets)
+    }
     return tweets.map((item, index)=>{
-      return <Tweet tweet={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
+      return <Tweet tweet={item} didRetweet = {handleDidRetweet} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
     })
   }
 
@@ -107,7 +115,7 @@ export function ParentTweet(props){
     tweet.parent ? <div className = 'row'>
       <div className = 'col-11 mx-auto p-3 border rounded'>
         <p className='mb-0 text-muted small'>Retweet</p> 
-        <Tweet className={' '} tweet= {tweet.parent} /> 
+        <Tweet hideActions className={' '} tweet= {tweet.parent} /> 
       </div>
     </div> : null
   )
@@ -115,6 +123,8 @@ export function ParentTweet(props){
   
 export function Tweet(props) {
     const tweet = props.tweet // same as const {tweet} = props.tweet
+    const didRetweet = props.didRetweet
+    const hideActions = props.hideActions
     const [actionTweet, setActionTweet] = useState(props.tweet ? props.tweet : null)
     const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
     const handlePerformAction = (newActionTweet, status) => {
@@ -122,6 +132,9 @@ export function Tweet(props) {
         setActionTweet(newActionTweet)
       }else if(status === 201){
         //let the tweet list know
+        if (didRetweet){
+          didRetweet(newActionTweet)
+        }
       }
     }
     return( 
@@ -132,7 +145,7 @@ export function Tweet(props) {
           <div>
           <ParentTweet tweet = {tweet} />
         </div>
-        {actionTweet && <div className='btn btn-group'>
+        {(actionTweet && hideActions !== true) && <div className='btn btn-group'>
           <ActionBtn tweet={actionTweet} didPerformAction = {handlePerformAction} action={{type: "like", display:"Likes"}}/>
           <ActionBtn tweet={actionTweet} didPerformAction = {handlePerformAction} action={{type: "unlike", display:"Unlike"}}/>
           <ActionBtn tweet={actionTweet} didPerformAction = {handlePerformAction} action={{type: "retweet", display:"Retweet"}}/>
