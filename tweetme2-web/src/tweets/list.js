@@ -25,7 +25,7 @@ export function TweetsList(props) {
         }
         apiTweetList(props.username, handleTweetListLookup)
       }
-    }, [tweetsInit, tweetsDidSet, setTweetsDidSet], props.username)
+    }, [tweetsInit, tweetsDidSet, setTweetsDidSet, props.username])
     const handleDidRetweet = (newtweet) => {
          const updateTweetsInit = [...tweetsInit]
          updateTweetsInit.unshift(newtweet)
