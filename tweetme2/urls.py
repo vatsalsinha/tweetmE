@@ -22,15 +22,17 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_view),
-    path('tweets/<int:tweet_id>', views.tweet_detail_view),
-    path('tweets', views.tweet_list_view),
-    path('api/tweets', views.tweet_list_view),
-    path('create-tweet', views.tweet_create_view),
+    path('', views.local_tweets_list_view),
+    path('api/tweets/', include('tweets.urls')),
+    path('<int:tweet_id>', views.local_tweets_detail_view),
+    path('profile/<str:username', views.local_tweets_profile_view)
+    #path('tweets/<int:tweet_id>', views.tweet_detail_view),
+    #path('tweets', views.tweet_list_view),
+    #path('api/tweets', views.tweet_list_view),
+    #path('create-tweet', views.tweet_create_view),
     #path('api/tweets/<int:tweet_id>/delete', views.tweet_delete_view),
     #path('api/tweets/action', views.tweet_action_view)
-    path('api/tweets/', include('tweets.urls')),
-    path('react/', TemplateView.as_view(template_name = 'react_via_django.html'))
+    #path('react/', TemplateView.as_view(template_name = 'react_via_django.html'))
 ]
 
 if settings.DEBUG:
