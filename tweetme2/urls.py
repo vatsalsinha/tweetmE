@@ -22,10 +22,10 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.local_tweets_list_view),
-    path('api/tweets/', include('tweets.urls')),
-    path('<int:tweet_id>', views.local_tweets_detail_view),
-    path('profile/<str:username', views.local_tweets_profile_view)
+    path('', views.tweets_list_view),
+    path('api/tweets/', include('tweets.api.urls')),
+    path('<int:tweet_id>', views.tweets_detail_view),
+    path('profile/<str:username', views.tweets_profile_view)
     #path('tweets/<int:tweet_id>', views.tweet_detail_view),
     #path('tweets', views.tweet_list_view),
     #path('api/tweets', views.tweet_list_view),
