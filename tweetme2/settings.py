@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tweets',
     'accounts',
+    'profiles',
     'rest_framework',
     'corsheaders'
 ]
