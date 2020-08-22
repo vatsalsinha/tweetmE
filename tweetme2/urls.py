@@ -30,6 +30,7 @@ urlpatterns = [
     path('register/', register_view),
     path('login/', login_view),
     path('logout/', logout_view),
+    re_path(r'api/profiles?/', include('profiles.api.urls')),
 
 
     #path('tweets/<int:tweet_id>', views.tweet_detail_view),
