@@ -7,5 +7,6 @@ urlpatterns = [
     path('<int:tweet_id>/', views.tweet_detail_view),
     path('action', views.tweet_action_view),
     path('<int:tweet_id>/delete/', views.tweet_delete_view),
+    path('feed/', views.tweet_feed_view)
      
 ]
