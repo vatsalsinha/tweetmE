@@ -25,6 +25,7 @@ export function UserDisplay(props){
             {user.followers_count} followers {" "} {user.following_count} following
             <br/>
             <span className="glyphicon glyphicon-map-marker" aria-hidden="true">{user.location}</span>
+            <br />
           </span>
         </UserLink>
       </React.Fragment>
