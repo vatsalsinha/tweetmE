@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from ..models import Profile
 from django.contrib.auth import get_user_model
+from ..serializers import PublicProfileSerializer
 
 User = get_user_model()
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -20,6 +21,15 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 #     current_user = request.user
 #     to_follow_user = 
 #     return Response({}, status = 200) 
+@api_view(['GET'])
+def profile_detail_api_view(request, username, *args, **kwargs):
+    # get the profile for the passed username
+    qs = Profile.objects.filter(user__username=username)
+    if not qs.exists():
+        raise Response({"detail": "User not found"}, status = 404)
+    profile_obj = qs.first()
+    data = PublicProfileSerializer(instance = profile_obj)
+    return Response(data.data, status = 200) 
 
 @api_view(['GET', 'POST'])
 #@authentication_classes([SessionAuthentication])

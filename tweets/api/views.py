@@ -14,6 +14,7 @@ from rest_framework.pagination import PageNumberPagination
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
+
 def get_paginated_queryset_response(qs, request):
     paginator = PageNumberPagination()
     paginator.page_size = 20
