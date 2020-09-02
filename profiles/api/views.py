@@ -26,9 +26,9 @@ def profile_detail_api_view(request, username, *args, **kwargs):
     # get the profile for the passed username
     qs = Profile.objects.filter(user__username=username)
     if not qs.exists():
-        raise Response({"detail": "User not found"}, status = 404)
+        return Response({"detail": "User not found"}, status = 404)
     profile_obj = qs.first()
-    data = PublicProfileSerializer(instance = profile_obj)
+    data = PublicProfileSerializer(instance = profile_obj, context = {"request": request}) #we can send data to a serializer like done here through 'context'
     return Response(data.data, status = 200) 
 
 @api_view(['GET', 'POST'])

@@ -19,7 +19,7 @@ def get_paginated_queryset_response(qs, request):
     paginator = PageNumberPagination()
     paginator.page_size = 20
     paginated_qs = paginator.paginate_queryset(qs, request)
-    serializer = TweetSerializer(paginated_qs, many=True)
+    serializer = TweetSerializer(paginated_qs, many=True, context = {"request": request}) # agar tweet ke andar bhi daalna hai is_following, to context variable yaha daalna hoga jaisa profiles->api->views me kiya tha
     return paginator.get_paginated_response(serializer.data)
 
 @api_view(['POST'])
