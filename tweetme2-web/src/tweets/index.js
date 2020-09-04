@@ -12,5 +12,5 @@ export {
     TweetsList,
     TweetCreate,
     TweetDetailComponent,
-    FeedComponent
+    FeedComponent,
 }

@@ -1,7 +1,9 @@
 import React, {useEffect, useState}  from 'react'
-import {Tweet} from './detail'
 
 import {apiTweetFeed} from './lookup'
+
+import {Tweet} from './detail'
+
 export function FeedList(props) {
     const [tweetsInit, setTweetsInit] = useState([])
     const [tweets, setTweets] = useState([])
@@ -21,20 +23,21 @@ export function FeedList(props) {
             setNextUrl(response.next)
             setTweetsInit(response.results)
             setTweetsDidSet(true)
-          } 
+          }
         }
         apiTweetFeed(handleTweetListLookup)
       }
     }, [tweetsInit, tweetsDidSet, setTweetsDidSet, props.username])
-    const handleDidRetweet = (newtweet) => {
-         const updateTweetsInit = [...tweetsInit]
-         updateTweetsInit.unshift(newtweet)
-         setTweetsInit(updateTweetsInit)
-         const updateFinalTweets = [...tweets]
-         updateFinalTweets.unshift(tweets)
-         setTweets(updateFinalTweets)
-    }
 
+
+    const handleDidRetweet = (newTweet) => {
+      const updateTweetsInit = [...tweetsInit]
+      updateTweetsInit.unshift(newTweet)
+      setTweetsInit(updateTweetsInit)
+      const updateFinalTweets = [...tweets]
+      updateFinalTweets.unshift(tweets)
+      setTweets(updateFinalTweets)
+    }
     const handleLoadNext = (event) => {
       event.preventDefault()
       if (nextUrl !== null) {
@@ -50,9 +53,13 @@ export function FeedList(props) {
       }
     }
 
-    return <React.Fragment> {tweets.map((item, index)=>{
-      return <Tweet tweet={item} didRetweet = {handleDidRetweet} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
+    return <React.Fragment>{tweets.map((item, index)=>{
+      return <Tweet  
+        tweet={item} 
+        didRetweet={handleDidRetweet}
+        className='my-5 py-5 border bg-white text-dark' 
+        key={`${index}-{item.id}`} />
     })}
-    {nextUrl !== null && <button onClick = {handleLoadNext} className = 'btn btn-outline-primary'>Next</button>}
+    {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load next</button>}
     </React.Fragment>
   }
